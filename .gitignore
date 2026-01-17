@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.env
+.env
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.cache/
+*.log
+
+# UV
+py-app/.venv/
+
+# Node/.NET
+bin/
+obj/
+*.user
+*.suo
+*.swp
+*.db
+
+# VSCode / Editor
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs / local data
+logs/
+redis-data/
