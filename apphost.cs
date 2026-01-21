@@ -1,7 +1,7 @@
 ﻿#:sdk Aspire.AppHost.Sdk@13.1.0
 #:package Aspire.Hosting.Python@13.1.0
 #:package Aspire.Hosting.Redis@13.1.0
-#:package CommunityToolkit.Aspire.Hosting.Python.Extensions@13.1.2-beta.506
+
 
 using Aspire.Hosting.Python;
 
@@ -23,6 +23,14 @@ builder.AddPythonApp("py-app", "py-app", "main.py")
     .WithEnvironment("MARKET_DATA_MAX_SNAPSHOTS", "25")
     .WithEnvironment("MARKET_DATA_SCAN_BATCH_SIZE", "200")
     .WithEnvironment("MARKET_DATA_KEY_PREFIX", "market");
+
+
+builder.AddUvicornApp("market-api", "market-api","main:app")
+    .WithReference(redisCache)
+    .WaitFor(redisCache)
+    .WithExternalHttpEndpoints()
+    .WithHealthCheck("/health");
+   
 
 
 builder.Build().Run();
