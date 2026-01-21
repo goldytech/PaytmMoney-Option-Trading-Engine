@@ -1,4 +1,4 @@
-#:sdk Aspire.AppHost.Sdk@13.1.0
+﻿#:sdk Aspire.AppHost.Sdk@13.1.0
 #:package Aspire.Hosting.Python@13.1.0
 #:package Aspire.Hosting.Redis@13.1.0
 
@@ -29,7 +29,8 @@ builder.AddUvicornApp("market-api", "market-api","main:app")
     .WithUv()
     .WithReference(redisCache)
     .WaitFor(redisCache)
-    .WithExternalHttpEndpoints();    
+    .WithExternalHttpEndpoints()
+    .WithHttpHealthCheck("/health"); 
    
 
 
