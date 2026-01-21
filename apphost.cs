@@ -1,4 +1,4 @@
-﻿#:sdk Aspire.AppHost.Sdk@13.1.0
+#:sdk Aspire.AppHost.Sdk@13.1.0
 #:package Aspire.Hosting.Python@13.1.0
 #:package Aspire.Hosting.Redis@13.1.0
 
@@ -26,10 +26,16 @@ builder.AddPythonApp("py-app", "py-app", "main.py")
 
 
 builder.AddUvicornApp("market-api", "market-api","main:app")
+    .WithUv()
     .WithReference(redisCache)
     .WaitFor(redisCache)
     .WithExternalHttpEndpoints()
-    .WithHealthCheck("/health");
+    .WithHealthCheck("/health")
+    .WithEnvironment("CACHE_URI", redisCache.GetConnectionString())
+    .WithEnvironment("MARKET_DATA_TTL_SECONDS", "300")
+    .WithEnvironment("MARKET_DATA_MAX_SNAPSHOTS", "25")
+    .WithEnvironment("MARKET_DATA_SCAN_BATCH_SIZE", "200")
+    .WithEnvironment("MARKET_DATA_KEY_PREFIX", "market");
    
 
 
