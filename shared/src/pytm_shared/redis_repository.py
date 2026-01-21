@@ -9,7 +9,7 @@ from typing import AsyncIterator
 import redis.asyncio as redis
 from opentelemetry import trace
 
-from cache_config import CacheSettings
+from .cache_config import CacheSettings
 
 logger = logging.getLogger(__name__)
 tracer = trace.get_tracer(__name__)

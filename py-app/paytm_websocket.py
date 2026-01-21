@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 
 from opentelemetry import trace
 
-from models import (
+from pytm_shared.models import (
     BaseMarketData,
     MarketDepth,
     LTP,
@@ -18,7 +18,7 @@ from models import (
     IndexFull,
     MarketData,
 )
-from market_data_store import MarketDataStore
+from pytm_shared.market_data_store import MarketDataStore
 
 tracer = trace.get_tracer(__name__)
 

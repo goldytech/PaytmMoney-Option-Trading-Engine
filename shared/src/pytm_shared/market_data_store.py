@@ -8,9 +8,9 @@ from typing import Iterable
 from opentelemetry import trace
 from pydantic import TypeAdapter
 
-from cache_config import CacheSettings
-from models import MarketData
-from redis_repository import RedisRepository
+from .cache_config import CacheSettings
+from .models import MarketData
+from .redis_repository import RedisRepository
 
 logger = logging.getLogger(__name__)
 tracer = trace.get_tracer(__name__)

@@ -4,6 +4,10 @@ This repository contains a Python 3.14+ application that connects to Paytm Money
 
 ## High-Level Architecture
 
+- **Shared Package (`shared/`)**
+  - `pytm-shared`: A reusable local UV package containing Redis utilities, Pydantic models, and cache configuration.
+  - Includes `cache_config.py`, `redis_repository.py`, `market_data_store.py`, and `models.py` for modular reuse across projects.
+
 - **Aspire AppHost (`apphost.cs`)**
   - Spins up the Python application alongside a Redis cache instance.
   - Injects required environment variables (WebSocket token, Redis URI, TTL configuration, etc.).
@@ -11,9 +15,9 @@ This repository contains a Python 3.14+ application that connects to Paytm Money
 
 - **Python Application (`py-app/`)**
   - `main.py` bootstraps OpenTelemetry, logging, cache settings, and runs the WebSocket client.
-  - `paytm_websocket.py` subscribes to desired instruments, parses binary packets into Pydantic models, and logs structured events.
-  - `market_data_store.py` & `redis_repository.py` save parsed market data snapshots into Redis lists with 5-minute TTL and configurable history length (default 25 entries per security/packet-type).
+  - `paytm_websocket.py` subscribes to desired instruments, parses binary packets into Pydantic models, and logs structured events with Redis storage.
   - `telemetry.py` configures OTLP exporters so logs, traces, and metrics are viewable inside the Aspire dashboard.
+  - References `pytm-shared` for Redis operations, ensuring code reusability.
 
 ## Key Features
 
@@ -27,15 +31,18 @@ This repository contains a Python 3.14+ application that connects to Paytm Money
 
 1. Ensure .NET Aspire 13.1+, Python 3.14+, and UV are installed.
 2. Provide a valid Paytm Money `PUBLIC_ACCESS_TOKEN` when running Aspire (via parameter or user secret).
-3. From the repository root, run:
+3. Install dependencies:
+   - From `py-app/`: Run `uv sync` to install `pytm-shared` and other deps (UV resolves the local shared package automatically).
+4. From the repository root, run:
    ```bash
    aspire run
    ```
    Aspire will launch the Redis container, the Python WebSocket app, and the observability dashboard.
-4. Open the Aspire dashboard URL shown in the console to monitor structured logs, traces, and metrics in real time.
+5. Open the Aspire dashboard URL shown in the console to monitor structured logs, traces, and metrics in real time.
 
 ## Customization
 
+- Update `shared/` to modify Redis utilities, Pydantic models, or cache config—changes propagate to all referencing projects.
 - Update `apphost.cs` to add/remove subscriptions, tweak Redis persistence, or enable additional exporters.
 - Modify `py-app/main.py` or `paytm_websocket.py` to add new instruments, extra logging, or downstream consumers.
 - Adjust cache tuning by editing the environment variables inside `apphost.cs` (e.g., keep more than 25 snapshots or change TTL).

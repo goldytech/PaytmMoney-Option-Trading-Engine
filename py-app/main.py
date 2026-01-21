@@ -5,9 +5,9 @@ import logging
 from opentelemetry.sdk._logs import LoggingHandler
 from paytm_websocket import PaytmWebSocketClient
 from telemetry import configure_opentelemetry
-from market_data_store import MarketDataStore
-from cache_config import load_cache_settings
-from redis_repository import configure_cache
+from pytm_shared.market_data_store import MarketDataStore
+from pytm_shared.cache_config import load_cache_settings
+from pytm_shared.redis_repository import configure_cache
 
 
 STANDARD_LOG_RECORD_ATTRS = {
