@@ -4,8 +4,12 @@ version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
     "fastapi[standard]>=0.128.0",
+    # OpenTelemetry packages (required by pytm-shared)
+    "opentelemetry-distro>=0.59b0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.38.0",
+    "opentelemetry-instrumentation-redis>=0.59b0",
     "pytm-shared",
 ]
 
 [tool.uv.sources]
-pytm-shared = { path = "../shared" }
+pytm-shared = { path = "../shared", editable = true }
